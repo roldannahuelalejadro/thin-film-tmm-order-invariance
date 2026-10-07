@@ -20,6 +20,8 @@ The derivation starts from Maxwell's equations, constructs the characteristic ma
 
 - `paper.tex`: self-contained LaTeX source.
 - `paper.pdf`: compiled preprint.
+- `paper_en.tex`: complete English LaTeX version.
+- `paper_en.pdf`: compiled English preprint.
 - `CITATION.cff`: citation metadata.
 - `LICENSE.md`: CC BY 4.0 licensing information.
 
@@ -30,6 +32,8 @@ Compile the document twice to resolve cross-references:
 ```bash
 pdflatex -interaction=nonstopmode -halt-on-error paper.tex
 pdflatex -interaction=nonstopmode -halt-on-error paper.tex
+pdflatex -interaction=nonstopmode -halt-on-error paper_en.tex
+pdflatex -interaction=nonstopmode -halt-on-error paper_en.tex
 ```
 
 ## Resumen

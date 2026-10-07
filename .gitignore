@@ -7,4 +7,4 @@
 *.fdb_latexmk
 *.xdv
 _minted-*
-repo_qa-*.png
+*_qa-*.png
