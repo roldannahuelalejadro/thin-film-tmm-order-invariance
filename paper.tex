@@ -1,0 +1,817 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,top=1.7cm,bottom=1.8cm,left=1.55cm,right=1.55cm,headheight=13pt]{geometry}
+\usepackage{amsmath,amssymb,mathtools,bm}
+\mathtoolsset{showonlyrefs}
+\usepackage{booktabs,tabularx,array}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{babel}
+\usepackage{float}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage[most]{tcolorbox}
+
+\definecolor{navy}{HTML}{17365D}
+\definecolor{teal}{HTML}{167D7F}
+\definecolor{gold}{HTML}{C78B24}
+\definecolor{softblue}{HTML}{EEF4F8}
+\definecolor{softgold}{HTML}{FFF7E8}
+\definecolor{softgray}{HTML}{F3F4F6}
+\definecolor{darkgray}{HTML}{374151}
+
+\hypersetup{
+  pdftitle={Condicion de conmutacion e invariancia de orden en stacks dielectricos bimateriales bajo polarizacion TM},
+  pdfauthor={Nahuel Alejandro Roldan},
+  pdfsubject={Conmutacion de matrices de transferencia en peliculas delgadas bimateriales}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\textcolor{navy}{\small TMM y conmutatividad en thin films}}
+\rhead{\textcolor{darkgray}{\small Demostraci\'on}}
+\cfoot{\textcolor{darkgray}{\thepage}}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+\setlength{\columnsep}{0.68cm}
+\renewcommand{\dbltopfraction}{0.95}
+\renewcommand{\dblfloatpagefraction}{0.80}
+\setcounter{dbltopnumber}{2}
+\setlength{\abovedisplayskip}{5pt plus 2pt minus 2pt}
+\setlength{\belowdisplayskip}{5pt plus 2pt minus 2pt}
+\setlist[itemize]{leftmargin=1.3em,itemsep=1pt,topsep=2pt}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=1pt,topsep=2pt}
+
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\M}{\mathbf{M}}
+\newcommand{\B}{\mathbf{B}}
+\newcommand{\I}{\mathbf{I}}
+\newcommand{\comm}[2]{\left[#1,#2\right]}
+\newcommand{\qab}{q_{\mathrm{ab}}}
+\newcommand{\vE}{\vec{E}}
+\newcommand{\vH}{\vec{H}}
+\newcommand{\vk}{\vec{k}}
+\newcommand{\vPsi}{\vec{\Psi}}
+
+\newtcolorbox{resultbox}{
+  colback=softblue,
+  colframe=navy,
+  boxrule=0.8pt,
+  arc=1.5mm,
+  left=3mm,right=3mm,top=2mm,bottom=2mm
+}
+\newtcolorbox{warningbox}{
+  colback=softgold,
+  colframe=gold,
+  boxrule=0.8pt,
+  arc=1.5mm,
+  left=3mm,right=3mm,top=2mm,bottom=2mm
+}
+
+\begin{document}
+
+\twocolumn[
+\begin{center}
+  {\Large\bfseries\color{navy}
+  Condici\'on de conmutaci\'on e invariancia de orden en stacks
+  diel\'ectricos bimateriales bajo polarizaci\'on TM}\par
+  \vspace{4pt}
+  {\normalsize Demostraci\'on mediante matrices de transferencia y conmutadores}\par
+  \vspace{4pt}
+  {\small\bfseries Nahuel Alejandro Rold\'an}\par
+  {\footnotesize Consejo Nacional de Investigaciones Cient\'ificas y T\'ecnicas (CONICET)}\par
+  {\footnotesize
+  ORCID: \href{https://orcid.org/0009-0009-6747-0756}{0009-0009-6747-0756}
+  \quad Version 0.1 \quad 7 de octubre de 2026 \quad CC BY 4.0}\par
+  {\footnotesize Preprint no revisado por pares}
+\end{center}
+
+\begin{minipage}{0.92\textwidth}
+\small
+\textbf{Resumen.} Se deriva una condici\'on suficiente para que las matrices caracter\'isticas de dos materiales diel\'ectricos $H$ y $L$ conmuten con independencia de sus espesores. La demostraci\'on parte de las ecuaciones de Maxwell, construye la matriz de transferencia de una capa y explicita la anulaci\'on del conmutador. Para polarizaci\'on TM, el \'angulo de incidencia resultante es
+\begin{equation}
+\boxed{
+\theta_{\mathrm{ab}}
+=
+\arcsin\!\left(
+\frac{n_Hn_L}{n_0\sqrt{n_H^2+n_L^2}}
+\right)}.
+\label{eq:resultado-principal}
+\end{equation}
+En esta condici\'on, el producto total depende de las fases acumuladas y pierde la dependencia con el orden de las capas. Se indican tambi\'en las hip\'otesis bajo las cuales esta reducci\'on es exacta.
+
+\medskip
+\textbf{Abstract.} We derive a sufficient condition under which the characteristic matrices of two dielectric materials $H$ and $L$ commute independently of their thicknesses. Starting from Maxwell's equations, the transfer matrix of a single layer and its commutator are constructed explicitly. For TM polarization, the resulting incidence angle is given by Eq.~\eqref{eq:resultado-principal}; at this point the multilayer response depends only on accumulated phases and becomes invariant under layer permutations.
+
+\medskip
+\textbf{Palabras clave / Keywords.} Pel\'iculas delgadas; m\'etodo de matrices de transferencia; conmutaci\'on matricial; invariancia de orden; polarizaci\'on TM. / Thin films; transfer-matrix method; matrix commutation; order invariance; TM polarization.
+\end{minipage}
+\vspace{7pt}
+]
+
+\section{De Maxwell al problema estratificado}
+
+Se consideran medios lineales, homog\'eneos, is\'otropos y sin fuentes libres, con dependencia temporal arm\'onica $e^{-\ii\omega t}$. Las ecuaciones macrosc\'opicas de Maxwell son~[1]
+\begin{align}
+\vec{\nabla}\cdot\vE&=0,
+&\vec{\nabla}\cdot\vH&=0,\\
+\vec{\nabla}\times\vE&=\frac{\ii\omega\mu}{c}\vH,
+&\vec{\nabla}\times\vH&=-\frac{\ii\omega\varepsilon}{c}\vE,
+\label{eq:maxwell}
+\end{align}
+con las relaciones constitutivas
+\begin{equation}
+\vec D=\varepsilon\vE,
+\qquad
+\vec B=\mu\vH.
+\label{eq:constitutivas}
+\end{equation}
+La estructura se estratifica en la direcci\'on $\hat y$ y es invariante en el plano de cada interfaz. Podemos elegir el plano de incidencia $x$--$y$ y escribir
+\begin{equation}
+\vk=\alpha\hat x+\beta\hat y.
+\label{eq:k-vector}
+\end{equation}
+La componente tangencial $\alpha$ debe ser la misma en todos los medios. Si el haz incide desde un medio de \`indice $n_0$ con \`angulo $\theta_0$,
+\begin{equation}
+\alpha=k_0n_0\sin\theta_0,
+\qquad
+k_0=\frac{\omega}{c}=\frac{2\pi}{\lambda}.
+\label{eq:alpha}
+\end{equation}
+En la capa $j$, la relaci\'on de dispersi\'on $|\vk_j|^2=k_0^2\varepsilon_j\mu_j=k_0^2n_j^2$ da
+\begin{align}
+\beta_j^{\pm}
+&=\pm\sqrt{k_0^2n_j^2-\alpha^2}\\
+&=\pm k_0\sqrt{n_j^2-n_0^2\sin^2\theta_0}
+=\pm k_0n_j\cos\theta_j.
+\label{eq:beta}
+\end{align}
+Esta igualdad contiene la ley de Snell,
+\begin{equation}
+n_0\sin\theta_0=n_j\sin\theta_j.
+\label{eq:snell}
+\end{equation}
+
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,>=latex,font=\small]
+  \fill[softgray] (-2.2,3.60) rectangle (2.2,5.05);
+  \fill[blue!28]  (-2.2,3.05) rectangle (2.2,3.60);
+  \fill[green!30] (-2.2,2.50) rectangle (2.2,3.05);
+  \fill[blue!28]  (-2.2,1.95) rectangle (2.2,2.50);
+  \fill[green!30] (-2.2,1.40) rectangle (2.2,1.95);
+  \fill[blue!28]  (-2.2,0.85) rectangle (2.2,1.40);
+  \fill[green!30] (-2.2,0.30) rectangle (2.2,0.85);
+  \fill[softgray] (-2.2,-0.55) rectangle (2.2,0.30);
+  \foreach \y in {3.60,3.05,2.50,1.95,1.40,0.85,0.30}
+    \draw[thick] (-2.2,\y)--(2.2,\y);
+  \draw[dashed,darkgray] (0,3.60)--(0,4.90);
+  \draw[very thick,navy,->] (-1.50,4.85)--(0,3.60)
+    node[midway,left=2pt] {$\vk_0^{+}$};
+  \draw[very thick,navy,->] (0,3.60)--(1.50,4.85)
+    node[midway,right=2pt] {$\vk_0^{-}$};
+
+  % En cada capa se muestran simultaneamente la rama propagante y la reflejada.
+  \draw[very thick,teal,->] (0.00,3.60)--(0.22,3.05);
+  \draw[semithick,orange!85!black,->] (0.22,3.05)--(0.52,3.60);
+  \draw[very thick,teal,->] (0.22,3.05)--(0.44,2.50);
+  \draw[semithick,orange!85!black,->] (0.44,2.50)--(0.74,3.05);
+  \draw[very thick,teal,->] (0.44,2.50)--(0.66,1.95);
+  \draw[semithick,orange!85!black,->] (0.66,1.95)--(0.96,2.50);
+  \draw[very thick,teal,->] (0.66,1.95)--(0.88,1.40);
+  \draw[semithick,orange!85!black,->] (0.88,1.40)--(1.18,1.95);
+  \draw[very thick,teal,->] (0.88,1.40)--(1.10,0.85);
+  \draw[semithick,orange!85!black,->] (1.10,0.85)--(1.40,1.40);
+  \draw[very thick,teal,->] (1.10,0.85)--(1.32,0.30);
+  \draw[semithick,orange!85!black,->] (1.32,0.30)--(1.62,0.85);
+  \draw[very thick,teal,->] (1.32,0.30)--(1.67,-0.48)
+    node[midway,right=2pt] {$\vk_s^{+}$};
+  \node[teal] at (-0.02,2.70) {$\vk_j^{+}$};
+  \node[orange!85!black] at (1.04,2.72) {$\vk_j^{-}$};
+
+  \draw[navy] (0,4.17) arc[start angle=90,end angle=130,radius=0.57];
+  \node[navy] at (-0.48,4.23) {$\theta_0$};
+  \draw[->] (-4.15,-0.30)--(-4.15,4.70) node[above] {$\hat y$};
+  \draw[->] (-4.15,-0.30)--(-3.45,-0.30) node[right] {$\hat x$};
+
+  \foreach \ya/\yb/\lab in {
+    3.05/3.60/$e_H^{(1)}$,2.50/3.05/$e_L^{(1)}$,
+    1.95/2.50/$e_H^{(2)}$,1.40/1.95/$e_L^{(2)}$,
+    0.85/1.40/$e_H^{(3)}$,0.30/0.85/$e_L^{(3)}$}
+    {\draw[<->] (-3.05,\ya)--(-3.05,\yb);
+     \node[left,font=\scriptsize] at (-3.08,{(\ya+\yb)/2}) {\lab};}
+
+  \node[right] at (2.30,4.32) {superestrato, $n_0$};
+  \node[right] at (2.30,3.325) {$H$: $n_H(\lambda)$};
+  \node[right] at (2.30,2.775) {$L$: $n_L(\lambda)$};
+  \node[right] at (2.30,2.225) {$H$: $n_H(\lambda)$};
+  \node[right] at (2.30,1.675) {$L$: $n_L(\lambda)$};
+  \node[right] at (2.30,1.125) {$H$: $n_H(\lambda)$};
+  \node[right] at (2.30,0.575) {$L$: $n_L(\lambda)$};
+  \node[right] at (2.30,-0.12) {sustrato, $n_s$};
+  \node[above right,inner sep=1pt] at (-2.2,3.60) {$y_0$};
+  \node[above right,inner sep=1pt] at (-2.2,2.50) {$y_2$};
+  \node[above right,inner sep=1pt] at (-2.2,1.40) {$y_4$};
+  \node[above right,inner sep=1pt] at (-2.2,0.30) {$y_6$};
+\end{tikzpicture}
+\caption{Estructura 1D bimaterial con seis capas horizontales. Las flechas verdes representan las componentes transmitidas y las naranjas las componentes reflejadas que aparecen en cada interfaz. Esta ramificaci\'on esquematiza la coexistencia de ondas propagantes y antipropagantes en cada capa; fuera del l\'imite abeliano, la secuencia microsc\'opica $H/L$ queda codificada en el producto ordenado de matrices.}
+\label{fig:stack-hl}
+\end{figure*}
+
+Las dos polarizaciones se desacoplan. Para TE, $\vE_j$ es paralelo a $\hat z$; para TM, $\vH_j$ es paralelo a $\hat z$. Definimos el campo escalar
+\begin{equation}
+f_j(x,y)=
+\begin{cases}
+E_{z,j}(x,y),&\mathrm{TE},\\
+H_{z,j}(x,y),&\mathrm{TM},
+\end{cases}
+\end{equation}
+y el par\'ametro que acompa\~na su derivada normal,
+\begin{equation}
+\sigma_j=
+\begin{cases}
+\mu_j,&\mathrm{TE},\\
+\varepsilon_j,&\mathrm{TM}.
+\end{cases}
+\label{eq:sigma}
+\end{equation}
+La soluci\'on en una capa es la superposici\'on de las dos ramas de $\beta_j$:
+\begin{equation}
+f_j(x,y)=
+\left(A_j e^{-\ii\beta_j y}+B_j e^{\ii\beta_j y}\right)e^{\ii\alpha x}.
+\label{eq:onda-capa}
+\end{equation}
+Aqu\'i $A_j$ y $B_j$ son las amplitudes propagante y antipropagante, respectivamente.
+
+\section{Condiciones de borde y TMM}
+
+En una interfaz $y=y_j$ no hay corrientes ni cargas superficiales. La continuidad de las componentes tangenciales de $\vE$ y $\vH$ equivale a
+\begin{align}
+f_j(x,y_j)&=f_{j+1}(x,y_j),\\
+\frac{1}{\sigma_j}\frac{\partial f_j}{\partial y}(x,y_j)
+&=\frac{1}{\sigma_{j+1}}\frac{\partial f_{j+1}}{\partial y}(x,y_j).
+\label{eq:borde}
+\end{align}
+Sustituyendo la ecuaci\'on~\eqref{eq:onda-capa} y cancelando el factor com\'un $e^{\ii\alpha x}$, obtenemos
+\begin{equation}
+\underbrace{\begin{pmatrix}
+e^{-\ii\beta_j y_j}&e^{\ii\beta_j y_j}\\[2pt]
+-\dfrac{\beta_j}{\sigma_j}e^{-\ii\beta_j y_j}&
+\dfrac{\beta_j}{\sigma_j}e^{\ii\beta_j y_j}
+\end{pmatrix}}_{\mathbf{G}_j(y_j)}
+\begin{pmatrix}A_j\\B_j\end{pmatrix}
+=
+\mathbf{G}_{j+1}(y_j)
+\begin{pmatrix}A_{j+1}\\B_{j+1}\end{pmatrix}.
+\label{eq:interfaz-matricial}
+\end{equation}
+Por lo tanto, la transferencia de amplitudes a trav\'es de una interfaz es
+\begin{equation}
+\begin{pmatrix}A_j\\B_j\end{pmatrix}
+=\mathbf{G}_j(y_j)^{-1}\mathbf{G}_{j+1}(y_j)
+\begin{pmatrix}A_{j+1}\\B_{j+1}\end{pmatrix}.
+\label{eq:transferencia-interfaz}
+\end{equation}
+Al encadenar todas las interfaces aparece el producto ordenado que relaciona superestrato y sustrato. Si en el sustrato no existe onda incidente, $B_s=0$, y
+\begin{equation}
+R=\left|\frac{B_0}{A_0}\right|^2.
+\label{eq:R-amplitudes}
+\end{equation}
+
+Para estudiar la contribuci\'on de cada capa resulta conveniente cambiar desde las amplitudes $(A_j,B_j)$ hacia un vector de campo tangencial
+\begin{equation}
+\vPsi_j(y)=
+\begin{pmatrix}
+f_j(y)\\[2pt]
+g_j(y)
+\end{pmatrix},
+\qquad
+g_j(y)\propto\frac{1}{\sigma_j}\frac{\partial f_j}{\partial y}.
+\label{eq:vector-estado}
+\end{equation}
+Las dos entradas son continuas en cada interfaz. Propagar este estado entre las dos caras de la capa $j$ produce la matriz caracter\'istica
+\begin{equation}
+\vPsi_j(y_j)=\M_j\,\vPsi_j(y_j+e_j),
+\end{equation}
+\begin{equation}
+\M_j(\varphi_j,q_j)=
+\begin{pmatrix}
+\cos\varphi_j & \ii q_j^{-1}\sin\varphi_j\\[2pt]
+\ii q_j\sin\varphi_j & \cos\varphi_j
+\end{pmatrix},
+\label{eq:matriz-capa}
+\end{equation}
+donde
+\begin{equation}
+\varphi_j=\beta_j e_j
+=\frac{2\pi}{\lambda}n_je_j\cos\theta_j
+\label{eq:fase}
+\end{equation}
+y, con la normalizaci\'on adoptada en este trabajo,
+\begin{align}
+q_j^{\mathrm{TE}}&=n_j\cos\theta_j,
+\label{eq:qte}\\
+q_j^{\mathrm{TM}}&=\frac{\cos\theta_j}{n_j}.
+\label{eq:qtm}
+\end{align}
+Usar la admitancia TM rec\'iproca intercambia $q_j$ con $q_j^{-1}$, pero no cambia la condici\'on de igualdad entre materiales. Para $N$ capas,
+\begin{align}
+\M_{\mathrm{tot}}
+&=\M_1\M_2\cdots\M_N,
+\label{eq:producto-total}
+\end{align}
+con los factores expl\'icitos
+\begin{align*}
+\M_1&=
+\begin{pmatrix}
+\cos\varphi_1 & \ii q_1^{-1}\sin\varphi_1\\
+\ii q_1\sin\varphi_1 & \cos\varphi_1
+\end{pmatrix},\\[2pt]
+\M_2&=
+\begin{pmatrix}
+\cos\varphi_2 & \ii q_2^{-1}\sin\varphi_2\\
+\ii q_2\sin\varphi_2 & \cos\varphi_2
+\end{pmatrix},\\[-2pt]
+&\hspace{1.2cm}\vdots\\[-2pt]
+\M_N&=
+\begin{pmatrix}
+\cos\varphi_N & \ii q_N^{-1}\sin\varphi_N\\
+\ii q_N\sin\varphi_N & \cos\varphi_N
+\end{pmatrix}.
+\end{align*}
+Cada factor contiene la fase $\varphi_j=\beta_j e_j$ y la admitancia reducida
+$q_j$ de su propia capa. Este orden no es decorativo: en general
+$\M_i\M_j\neq\M_j\M_i$, de modo que permutar dos factores modifica
+$\M_{\mathrm{tot}}$ y, por consiguiente, la reflectancia.
+
+\section{Idea: convertir el producto en una suma}
+
+La motivaci\'on algebraica es comprimir el producto de la ecuaci\'on~\eqref{eq:producto-total}. Si cada matriz invertible admite localmente un logaritmo, podemos introducir un generador $\mathbf{A}_j$ tal que
+\begin{equation}
+\M_j=e^{\mathbf{A}_j},
+\qquad
+\mathbf{A}_j=\log\M_j.
+\label{eq:log-general}
+\end{equation}
+Nos gustar\'ia poder reemplazar
+\begin{equation}
+e^{\mathbf{A}_1}e^{\mathbf{A}_2}\cdots e^{\mathbf{A}_N}
+\quad\hbox{por}\quad
+e^{\mathbf{A}_1+\mathbf{A}_2+\cdots+\mathbf{A}_N}.
+\label{eq:deseo-aditivo}
+\end{equation}
+Esta es la versi\'on matricial de la propiedad elemental de exponenciales escalares, pero no vale para matrices arbitrarias. La f\'ormula de Campbell--Baker--Hausdorff muestra que
+\begin{equation}
+\log\!\left(e^{\mathbf{A}_1}e^{\mathbf{A}_2}\right)
+=\mathbf{A}_1+\mathbf{A}_2+\frac{1}{2}\comm{\mathbf{A}_1}{\mathbf{A}_2}+\cdots.
+\label{eq:bch-motivacion}
+\end{equation}
+Por consiguiente, la reducci\'on aditiva exacta ocurre si los generadores conmutan. La pregunta f\'isica pasa a ser: \emph{\textquestiondown podemos elegir las condiciones $C$ ---en particular $\theta_0$ y la polarizaci\'on--- de modo que las matrices de $H$ y $L$ conmuten para cualquier espesor?}
+
+Para contestarla no postulamos un generador abstracto. Lo obtenemos de la propia matriz de capa.
+
+Definimos
+\begin{equation}
+\B(q)=
+\begin{pmatrix}
+0&q^{-1}\\
+q&0
+\end{pmatrix}.
+\label{eq:Bq}
+\end{equation}
+Una multiplicaci\'on directa del generador de la ecuaci\'on~\eqref{eq:Bq} da
+\begin{equation}
+\B(q)^2=\I.
+\label{eq:B2}
+\end{equation}
+Por ello, la serie exponencial se separa en potencias pares e impares:
+\begin{align}
+\exp\!\left(\ii\varphi\B\right)
+&=\sum_{m=0}^{\infty}\frac{(\ii\varphi\B)^m}{m!}\\
+&=\I\sum_{r=0}^{\infty}\frac{(-1)^r\varphi^{2r}}{(2r)!}
++\ii\B\sum_{r=0}^{\infty}\frac{(-1)^r\varphi^{2r+1}}{(2r+1)!}\\
+&=\I\cos\varphi+\ii\B\sin\varphi.
+\end{align}
+Ahora sustituimos expl\'icitamente las dos matrices que aparecen en la \'ultima l\'inea:
+\begin{align*}
+\I\cos\varphi
+&=\cos\varphi
+\begin{pmatrix}
+1&0\\0&1
+\end{pmatrix}
+\nonumber\\
+&=
+\begin{pmatrix}
+\cos\varphi&0\\0&\cos\varphi
+\end{pmatrix},
+\\[4pt]
+\ii\B(q)\sin\varphi
+&=\ii\sin\varphi
+\begin{pmatrix}
+0&q^{-1}\\q&0
+\end{pmatrix}
+\nonumber\\
+&=
+\begin{pmatrix}
+0&\ii q^{-1}\sin\varphi\\
+\ii q\sin\varphi&0
+\end{pmatrix}.
+\end{align*}
+Sumando entrada por entrada,
+\begin{align*}
+\I\cos\varphi+\ii\B(q)\sin\varphi
+&=
+\begin{pmatrix}
+\cos\varphi+0&0+\ii q^{-1}\sin\varphi\\
+0+\ii q\sin\varphi&\cos\varphi+0
+\end{pmatrix}
+\\[3pt]
+&=
+\begin{pmatrix}
+\cos\varphi&\ii q^{-1}\sin\varphi\\
+\ii q\sin\varphi&\cos\varphi
+\end{pmatrix}.
+\end{align*}
+Esta matriz coincide entrada por entrada con la matriz caracter\'istica de la ecuaci\'on~\eqref{eq:matriz-capa}. Por tanto,
+\begin{equation}
+\boxed{\M_j=\exp\!\left(\ii\varphi_j\B(q_j)\right).}
+\label{eq:exponencial}
+\end{equation}
+La representaci\'on exponencial~\eqref{eq:exponencial} hace visible el generador algebraico de cada capa.
+
+\section{Conmutador de dos capas}
+
+Consideremos dos capas $i$ y $j$. Primero calculamos los productos de sus generadores:
+\begin{align}
+\B(q_i)\B(q_j)
+&=
+\begin{pmatrix}
+q_j/q_i&0\\
+0&q_i/q_j
+\end{pmatrix},\\[3pt]
+\B(q_j)\B(q_i)
+&=
+\begin{pmatrix}
+q_i/q_j&0\\
+0&q_j/q_i
+\end{pmatrix}.
+\end{align}
+Luego,
+\begin{equation}
+\comm{\B(q_i)}{\B(q_j)}
+=
+\left(\frac{q_j}{q_i}-\frac{q_i}{q_j}\right)
+\begin{pmatrix}1&0\\0&-1\end{pmatrix}.
+\label{eq:conmutador-B}
+\end{equation}
+Como
+\begin{equation}
+\frac{q_j}{q_i}-\frac{q_i}{q_j}
+=\frac{q_j^2-q_i^2}{q_iq_j},
+\end{equation}
+tenemos
+\begin{equation}
+\comm{\B(q_i)}{\B(q_j)}=0
+\quad\Longleftrightarrow\quad
+q_i^2=q_j^2.
+\label{eq:condicion-q}
+\end{equation}
+
+Aqu\'i $q_i$ y $q_j$ son las admitancias reducidas de las capas y dependen de la polarizaci\'on. Para $\ell\in\{i,j\}$,
+\begin{equation*}
+q_\ell=
+\begin{cases}
+q_\ell^{\mathrm{TE}}=n_\ell\cos\theta_\ell,
+&\mathrm{TE},\\[2pt]
+q_\ell^{\mathrm{TM}}=\dfrac{\cos\theta_\ell}{n_\ell},
+&\mathrm{TM}.
+\end{cases}
+\end{equation*}
+Por tanto, la condici\'on de la ecuaci\'on~\eqref{eq:condicion-q} significa expl\'icitamente
+\begin{equation*}
+\begin{aligned}
+n_i^2\cos^2\theta_i&=n_j^2\cos^2\theta_j,
+&&\mathrm{TE},\\
+\frac{\cos^2\theta_i}{n_i^2}
+&=\frac{\cos^2\theta_j}{n_j^2},
+&&\mathrm{TM}.
+\end{aligned}
+\end{equation*}
+
+La misma condici\'on se obtiene directamente para las matrices de capa. Para mostrarlo sin omitir pasos, escribimos
+\begin{equation*}
+\M_\ell=c_\ell\I+\ii s_\ell\B_\ell,
+\qquad
+c_\ell=\cos\varphi_\ell,
+\qquad
+s_\ell=\sin\varphi_\ell.
+\end{equation*}
+El producto en el orden $i$ seguido de $j$ es
+\begin{align*}
+\M_i\M_j
+&=(c_i\I+\ii s_i\B_i)(c_j\I+\ii s_j\B_j)
+\\
+&=c_ic_j\I+\ii c_is_j\B_j+\ii s_ic_j\B_i-s_is_j\B_i\B_j.
+\end{align*}
+Al invertir el orden,
+\begin{align*}
+\M_j\M_i
+&=(c_j\I+\ii s_j\B_j)(c_i\I+\ii s_i\B_i)
+\\
+&=c_ic_j\I+\ii s_ic_j\B_i+\ii c_is_j\B_j-s_is_j\B_j\B_i.
+\end{align*}
+Los t\'erminos proporcionales a $\I$, $\B_i$ y $\B_j$ son id\'enticos en ambos productos y se cancelan al restarlos. Por definici\'on,
+\begin{align}
+\comm{\M_i}{\M_j}
+&=\M_i\M_j-\M_j\M_i
+\nonumber\\
+&=-s_is_j\left(\B_i\B_j-\B_j\B_i\right)
+\nonumber\\
+&=-\sin\varphi_i\sin\varphi_j\comm{\B_i}{\B_j}.
+\label{eq:conmutador-M}
+\end{align}
+La identidad~\eqref{eq:conmutador-M} separa ambos efectos: la dependencia con los espesores queda contenida en $\sin\varphi_i\sin\varphi_j$, mientras que la conmutaci\'on estructural queda determinada por $\comm{\B_i}{\B_j}$.
+
+\begin{warningbox}
+\textbf{Dos tipos de conmutaci\'on.}
+\begin{itemize}
+\item Si $\sin\varphi_i=0$ o $\sin\varphi_j=0$, el conmutador puede anularse para espesores particulares. Es una cancelaci\'on accidental y dependiente de $\lambda$.
+\item Si $q_i^2=q_j^2$, el conmutador se anula para fases y espesores arbitrarios. Esta es la conmutaci\'on estructural que define el l\'imite abeliano.
+\end{itemize}
+\end{warningbox}
+
+Para medios pasivos con admitancias positivas, la rama f\'isica habitual es $q_i=q_j$.
+
+\section{Resoluci\'on TM}
+
+Aplicamos la condici\'on~\eqref{eq:condicion-q} a dos materiales $H$ y $L$. Primero explicitamos las cantidades que intervienen. De la ley de Snell, ecuaci\'on~\eqref{eq:snell},
+\begin{equation}
+\sin\theta_j=\frac{n_0}{n_j}\sin\theta_0,
+\end{equation}
+y entonces
+\begin{equation}
+\cos^2\theta_j
+=1-\frac{n_0^2}{n_j^2}\sin^2\theta_0
+=\frac{n_j^2-n_0^2\sin^2\theta_0}{n_j^2}.
+\label{eq:cos2}
+\end{equation}
+La componente normal del vector de onda es
+\begin{align}
+\beta_j
+&=k_0n_j\cos\theta_j
+\nonumber\\
+&=k_0\sqrt{n_j^2-n_0^2\sin^2\theta_0},
+\qquad
+k_0=\frac{2\pi}{\lambda}.
+\label{eq:beta-seccion-tm}
+\end{align}
+Por tanto, la fase adquirida en una capa de espesor $e_j$ es
+\begin{align}
+\varphi_j
+&=\beta_j e_j
+\nonumber\\
+&=\frac{2\pi e_j}{\lambda}
+\sqrt{n_j^2-n_0^2\sin^2\theta_0}.
+\label{eq:phi-explicita-tm}
+\end{align}
+El espesor aparece en $\varphi_j$, pero no en la admitancia reducida. Para TM, usando la ecuaci\'on~\eqref{eq:qtm} y $\beta_j=k_0n_j\cos\theta_j$,
+\begin{align}
+q_j^{\mathrm{TM}}
+&=\frac{\cos\theta_j}{n_j}
+\nonumber\\
+&=\frac{\beta_j}{k_0n_j^2}
+\nonumber\\
+&=\frac{\sqrt{n_j^2-n_0^2\sin^2\theta_0}}{n_j^2}.
+\label{eq:qtm-beta}
+\end{align}
+Al elevar al cuadrado,
+\begin{equation}
+\left(q_j^{\mathrm{TM}}\right)^2
+=\frac{\cos^2\theta_j}{n_j^2}
+=\frac{n_j^2-n_0^2\sin^2\theta_0}{n_j^4}.
+\label{eq:qtm2}
+\end{equation}
+Exigimos igualdad entre $H$ y $L$:
+\begin{equation}
+\frac{n_H^2-n_0^2\sin^2\theta_{\mathrm{ab}}}{n_H^4}
+=
+\frac{n_L^2-n_0^2\sin^2\theta_{\mathrm{ab}}}{n_L^4}.
+\label{eq:igualdad-tm}
+\end{equation}
+Introducimos, solo para abreviar,
+\begin{equation}
+s=n_0^2\sin^2\theta_{\mathrm{ab}}.
+\end{equation}
+Multiplicando la ecuaci\'on~\eqref{eq:igualdad-tm} por $n_H^4n_L^4$:
+\begin{align}
+n_L^4(n_H^2-s)&=n_H^4(n_L^2-s),\\
+s(n_H^4-n_L^4)&=n_H^4n_L^2-n_L^4n_H^2.
+\end{align}
+Factorizamos ambos miembros:
+\begin{align}
+n_H^4-n_L^4&=(n_H^2-n_L^2)(n_H^2+n_L^2),\\
+n_H^4n_L^2-n_L^4n_H^2&=n_H^2n_L^2(n_H^2-n_L^2).
+\end{align}
+Si $n_H\neq n_L$, se cancela $n_H^2-n_L^2$ y resulta
+\begin{equation}
+s=\frac{n_H^2n_L^2}{n_H^2+n_L^2}.
+\end{equation}
+Recuperando la definici\'on de $s$:
+\begin{equation}
+\boxed{
+\sin^2\theta_{\mathrm{ab}}
+=
+\frac{n_H^2n_L^2}{n_0^2(n_H^2+n_L^2)}.}
+\label{eq:sin2-ab}
+\end{equation}
+La forma cuadr\'atica~\eqref{eq:sin2-ab}, al tomar la rama $0\leq\theta_{\mathrm{ab}}<\pi/2$, conduce a la ecuaci\'on~\eqref{eq:resultado-principal}.
+
+\subsection*{Condici\'on de existencia}
+
+El argumento del arco seno debe pertenecer a $[0,1]$:
+\begin{equation}
+\frac{n_Hn_L}{n_0\sqrt{n_H^2+n_L^2}}\leq1.
+\label{eq:existencia}
+\end{equation}
+La condici\'on de existencia~\eqref{eq:existencia} tambi\'en puede escribirse como
+\begin{equation}
+n_0^2\geq\frac{n_H^2n_L^2}{n_H^2+n_L^2}.
+\end{equation}
+Por tanto, no todo par de materiales admite un \`angulo abeliano real desde cualquier medio incidente.
+
+\subsection*{Ejemplo}
+
+Para $n_0=1$, $n_L=1$ y $n_H=2.6$,
+\begin{equation}
+\sin\theta_{\mathrm{ab}}
+=\frac{2.6}{\sqrt{2.6^2+1}}
+\approx0.933,
+\end{equation}
+de donde
+\begin{equation}
+\theta_{\mathrm{ab}}\approx68.9^{\circ}.
+\end{equation}
+
+\section{Ausencia de soluci\'on TE no trivial}
+
+Para TE,
+\begin{equation}
+\left(q_j^{\mathrm{TE}}\right)^2
+=n_j^2\cos^2\theta_j
+=n_j^2-n_0^2\sin^2\theta_0.
+\end{equation}
+La condici\'on $q_H^2=q_L^2$ exige
+\begin{equation}
+n_H^2-n_0^2\sin^2\theta_0
+=n_L^2-n_0^2\sin^2\theta_0,
+\end{equation}
+y, por cancelaci\'on del t\'ermino angular,
+\begin{equation}
+n_H^2=n_L^2.
+\end{equation}
+Para \`indices positivos, esto implica $n_H=n_L$. Por consiguiente, materiales realmente distintos no poseen en TE un \`angulo estructural equivalente al de TM.
+
+\begin{figure*}[!t]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,>=latex,font=\small]
+  \node[font=\bfseries,navy] at (-4.7,4.05) {stack original};
+  \fill[softgray] (-6.4,3.55) rectangle (-3.0,3.90);
+  \fill[blue!30]  (-6.4,3.05) rectangle (-3.0,3.55);
+  \fill[green!32] (-6.4,2.72) rectangle (-3.0,3.05);
+  \fill[green!32] (-6.4,2.22) rectangle (-3.0,2.72);
+  \fill[blue!30]  (-6.4,1.82) rectangle (-3.0,2.22);
+  \fill[green!32] (-6.4,1.50) rectangle (-3.0,1.82);
+  \fill[blue!30]  (-6.4,0.92) rectangle (-3.0,1.50);
+  \fill[blue!30]  (-6.4,0.58) rectangle (-3.0,0.92);
+  \fill[green!32] (-6.4,0.08) rectangle (-3.0,0.58);
+  \fill[softgray] (-6.4,-0.27) rectangle (-3.0,0.08);
+  \foreach \y in {-0.27,0.08,0.58,0.92,1.50,1.82,2.22,2.72,3.05,3.55,3.90}
+    \draw[thin] (-6.4,\y)--(-3.0,\y);
+  \node at (-4.7,3.30) {$H(e_{H,1})$};
+  \node at (-4.7,2.88) {$L(e_{L,1})$};
+  \node at (-4.7,2.47) {$L(e_{L,2})$};
+  \node at (-4.7,2.02) {$H(e_{H,2})$};
+  \node at (-4.7,1.66) {$L(e_{L,3})$};
+  \node at (-4.7,1.21) {$H(e_{H,3})$};
+  \node at (-4.7,0.75) {$H(e_{H,4})$};
+  \node at (-4.7,0.33) {$L(e_{L,4})$};
+
+  \draw[very thick,navy,->] (-2.35,1.82)--(0.35,1.82);
+  \node[align=center,navy] at (-1.0,2.35)
+    {$q_H=q_L=\qab$\\$\theta_0=\theta_{\mathrm{ab}}$};
+  \node[align=center,darkgray] at (-1.0,1.27)
+    {conmutaci\'on exacta\\y suma de fases};
+
+  \node[font=\bfseries,navy] at (3.05,4.05) {stack efectivo};
+  \fill[softgray] (1.35,3.55) rectangle (4.75,3.90);
+  \fill[blue!30]  (1.35,1.75) rectangle (4.75,3.55);
+  \fill[green!32] (1.35,0.08) rectangle (4.75,1.75);
+  \fill[softgray] (1.35,-0.27) rectangle (4.75,0.08);
+  \foreach \y in {-0.27,0.08,1.75,3.55,3.90}
+    \draw[thin] (1.35,\y)--(4.75,\y);
+  \draw[<->] (5.15,1.75)--(5.15,3.55);
+  \draw[<->] (5.15,0.08)--(5.15,1.75);
+  \node[right] at (5.15,2.65) {$E_H=\sum_{m=1}^{4}e_{H,m}$};
+  \node[right] at (5.15,0.92) {$E_L=\sum_{m=1}^{4}e_{L,m}$};
+  \node at (3.05,2.65) {$H(E_H)$};
+  \node at (3.05,0.92) {$L(E_L)$};
+
+  \node[align=center] at (0, -0.90) {$\displaystyle
+  \M_{\rm multi}=\prod_{j=1}^{N}\M_j
+  =\M_H(E_H)\M_L(E_L)
+  =\exp\!\left[\ii\B(\qab)\sum_{j=1}^{N}\varphi_j\right]$};
+\end{tikzpicture}
+\caption{Compactaci\'on exacta de un stack bimaterial en el punto abeliano. Aunque el stack original contenga muchas capas, repeticiones y un orden arbitrario, su matriz total coincide con la de dos capas efectivas cuyos espesores son las sumas $E_H$ y $E_L$. La equivalencia exige una polarizaci\'on y condiciones espectrales para las que $q_H=q_L$; no afirma equivalencia fuera de ese punto.}
+\label{fig:compactacion-abeliana}
+\end{figure*}
+
+\section{Stack bimaterial}
+
+Supongamos un stack formado exclusivamente por capas $H$ y $L$. En el \`angulo abeliano,
+\begin{equation}
+q_H=q_L=\qab,
+\qquad
+\B_H=\B_L=\B(\qab).
+\end{equation}
+Cada capa puede escribirse como
+\begin{equation}
+\M_j=\exp\!\left(\ii\varphi_j\B(\qab)\right).
+\end{equation}
+Todas las matrices son funciones del mismo generador. Por ello conmutan entre s\'i y
+\begin{align}
+\M_{\mathrm{tot}}
+&=\prod_{j=1}^{N}\exp\!\left(\ii\varphi_j\B(\qab)\right)\\
+&=\exp\!\left(\ii\B(\qab)\sum_{j=1}^{N}\varphi_j\right).
+\label{eq:colapso-total}
+\end{align}
+Separando las capas seg\'un el material:
+\begin{equation}
+\sum_j\varphi_j
+=\frac{2\pi}{\lambda}\left[
+n_H\cos\theta_H\,E_H+n_L\cos\theta_L\,E_L
+\right],
+\label{eq:fase-acumulada}
+\end{equation}
+donde
+\begin{equation}
+E_H=\sum_{j\in H}e_j,
+\qquad
+E_L=\sum_{j\in L}e_j.
+\end{equation}
+
+\begin{resultbox}
+La identidad~\eqref{eq:colapso-total} muestra que, en el l\'imite abeliano, el stack deja de recordar el orden de las capas. Dos secuencias cualesquiera con los mismos espesores acumulados $E_H$ y $E_L$ producen la misma matriz total dentro de las hip\'otesis del modelo. A una longitud de onda fija, incluso aparece solamente la combinaci\'on escalar de la ecuaci\'on~\eqref{eq:fase-acumulada}. Para un espectro completo conviene conservar $E_H$ y $E_L$, porque sus coeficientes pueden depender de $\lambda$.
+\end{resultbox}
+
+\section{Hip\'otesis de validez}
+
+La demostraci\'on requiere:
+\begin{itemize}
+\item capas planas, homog\'eneas, is\'otropas y no magn\'eticas;
+\item polarizaciones TE y TM desacopladas;
+\item una misma componente tangencial del vector de onda en todas las capas;
+\item ausencia de rugosidad, difusi\'on y acoplamiento lateral;
+\item admitancias y fases definidas dentro de la TMM $2\times2$.
+\end{itemize}
+
+Si $n_H=n_H(\lambda)$ y $n_L=n_L(\lambda)$ son dispersivos, entonces
+\begin{equation}
+\theta_{\mathrm{ab}}=\theta_{\mathrm{ab}}(\lambda).
+\end{equation}
+Un \`unico \`angulo no garantiza conmutaci\'on exacta sobre una banda ancha, salvo que las dispersiones satisfagan una relaci\'on especial. En la pr\'actica puede estudiarse una banda de conmutaci\'on aproximada mediante
+\begin{equation}
+\left\|\comm{\M_H(\lambda)}{\M_L(\lambda)}\right\|
+\end{equation}
+como funci\'on de $\lambda$ y $\theta_0$.
+
+En medios absorbentes, los \`indices y \`angulos efectivos son complejos. La ecuaci\'on algebraica $q_H^2=q_L^2$ sigue siendo la condici\'on formal, pero un \`angulo real que la satisfaga puede no existir.
+
+La igualdad $q_H^2=q_L^2$ es la condici\'on estructural que anula el conmutador con independencia de los espesores. No excluye conmutaciones accidentales en puntos aislados: por ejemplo, si $\sin\varphi_H=0$ o $\sin\varphi_L=0$, una matriz de capa puede reducirse a $\pm\I$ y conmutar aunque las admitancias no coincidan. Estas degeneraciones dependen de la fase y no producen, en general, invariancia de orden para espesores arbitrarios.
+
+\begin{resultbox}
+\textbf{Conclusi\'on.} La p\'erdida de memoria del orden no se postula: se deriva del hecho de que todas las matrices de capa se vuelven exponenciales del mismo generador. Para TM, esa coincidencia ocurre cuando las admitancias reducidas de $H$ y $L$ son iguales, lo que conduce a la ecuaci\'on~\eqref{eq:resultado-principal}. En ese punto, el producto ordenado se reduce exactamente a una suma de fases y el espacio efectivo del stack queda descrito por variables acumuladas.
+\end{resultbox}
+
+\paragraph{Disponibilidad.}
+La fuente \LaTeX{}, el PDF compilado y los archivos necesarios para reproducir este preprint est\'an disponibles en
+\href{https://github.com/roldannahuelalejadro/thin-film-tmm-order-invariance}{github.com/roldannahuelalejadro/thin-film-tmm-order-invariance}.
+
+\begin{minipage}{\columnwidth}
+\section*{Referencias}
+\footnotesize
+\begin{enumerate}[label={[\arabic*]},leftmargin=2em,itemsep=0pt,topsep=1pt]
+\item D. J. Griffiths, \emph{Introduction to Electrodynamics}, 4.\textsuperscript{a} ed., Pearson, 2013.
+\item P. Yeh, \emph{Optical Waves in Layered Media}, Wiley, 1988.
+\item H. A. Macleod, \emph{Thin-Film Optical Filters}, 4.\textsuperscript{a} ed., CRC Press, 2010.
+\end{enumerate}
+\end{minipage}
+
+\end{document}

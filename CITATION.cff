@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it using the metadata below."
+title: "Condición de conmutación e invariancia de orden en stacks dieléctricos bimateriales bajo polarización TM"
+type: article
+authors:
+  - family-names: "Roldán"
+    given-names: "Nahuel Alejandro"
+    orcid: "https://orcid.org/0009-0009-6747-0756"
+    affiliation: "Consejo Nacional de Investigaciones Científicas y Técnicas (CONICET)"
+version: "0.1"
+date-released: "2026-10-07"
+license: "CC-BY-4.0"
+repository-code: "https://github.com/roldannahuelalejadro/thin-film-tmm-order-invariance"
+abstract: >-
+  A sufficient condition is derived under which the characteristic matrices
+  of two dielectric materials commute independently of their thicknesses.
+  For TM polarization, the resulting incidence angle makes the multilayer
+  response depend only on accumulated phases and invariant under layer
+  permutations, subject to the stated physical assumptions.
+keywords:
+  - thin films
+  - transfer matrix method
+  - matrix commutation
+  - order invariance
+  - TM polarization
